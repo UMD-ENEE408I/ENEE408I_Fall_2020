@@ -12,9 +12,9 @@ Each team should have a folder team1, team2, etc.
 
 **Note 3:** The `gitk` command will easily visualize the git tree. `gitk --all` will show you an even more detailed tree. Install with `sudo apt install gitk`.
 
-**Note 4:** When you are ready to share your work with the class through the `main` branch, a good way is to make a Pull Request. For example this file was commited with pull request #2. You can then comment on the pull request and have a discussion.
+**Note 4:** When you are ready to share your work with the class through the `main` branch, a good way is to make a Pull Request. For example this file was commited with Pull Request [#2](https://github.com/UMD-ENEE408I/ENEE408I_Fall_2020/pull/2). You can then comment on the pull request and have a discussion.
 
-Remember sharing your code with teammates is encouraged! If setup right your teammates can even import code from another teams folder instead of copy-pasting it.
+Remember sharing your code with teammates is encouraged! You could even import code from another teams folder instead of copy-pasting it.
 
 ## Contents
 

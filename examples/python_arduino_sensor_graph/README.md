@@ -6,4 +6,4 @@ Run `python3 CheckSerialComm.py`. Check that the port is correct if you had to c
 
 Final result will be a simple plot:
 
-![Random Plot](https://github.com/UMD-ENEE408I/ENEE408I_Fall_2020/blob/initial-notes-examples/examples/python_arduino_sensor_graph/Figure_1.png)
+![Random Plot](https://github.com/UMD-ENEE408I/ENEE408I_Fall_2020/blob/main/examples/python_arduino_sensor_graph/Figure_1.png)
