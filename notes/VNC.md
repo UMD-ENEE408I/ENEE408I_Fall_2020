@@ -76,6 +76,7 @@ You can select "Custom Installation" during setup to disable installation of a V
 I tried a couple other viewers on Windows and TightVNC seemed to be the best.
 
 For MAC's, I am not sure what VNC software is best, though Google finds several options. Let us know what works!
+Alvin used https://www.realvnc.com/en/connect/download/viewer/macos/ and it worked for him. 
 
 After installing, run TightVNC and enter the ip address before in the "Remote Host" section, push connect, enter "thepassword" for the password, and you should be good to go.
 
