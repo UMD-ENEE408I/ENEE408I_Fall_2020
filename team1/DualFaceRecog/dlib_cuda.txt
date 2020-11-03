@@ -1,0 +1,41 @@
+# Installing dlib with CUDA will allow face_recognition to properly utilize the onboard GPU
+# to improve framerate and performance.
+
+# First run these commands
+$ sudo apt-get update
+$ sudo apt-get install python3-dev
+$ sudo apt-get install build-dep python3
+$ sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev
+$ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+$ sudo apt-get install gcc-6 g++-6
+$ git clone https://github.com/davisking/dlib.git
+
+# Open dlib/setup.py in text editor
+# Add the line os.environ["CC"] = "gcc-6" here:
+
+# from setuptools.command.build_ext import build_ext
+# from distutils.version import LooseVersion
+
+# os.environ["CC"] = "gcc-6" # HERE!
+
+# def get_extra_cmake_options():
+
+$ cd dlib
+$ mkdir build && cd build
+
+$ sudo cmake .. -DCUDA_HOST_COMPILER=/usr/bin/gcc-6 -DCMAKE_PREFIX_PATH=/usr/lib/x86_64-linux-gnu/ -DDLIB_USE_CUDA=1 -DUSE_F16C=1
+
+$ sudo cmake --build . --config Release
+$ sudo ldconfig
+
+$ cd ..
+$ sudo python3 setup.py install
+# This will take a bit of time, approx. 20-30 min
+
+# To test if dlib is installed with CUDA do this:
+$ python3
+>> import dlib
+>> print(dlib.DLIB_USE_CUDA)
+# If "True" CUDA was properly installed
+
+#After this you can delete your dlib folder
