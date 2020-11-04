@@ -56,6 +56,12 @@ AutomaticLoginEnable = true
 AutomaticLogin = ubuntu
 ```
 
+Comment out the following line
+
+```
+WaylandEnable=false
+```
+
 Get the Jetson's IP Address on your local network
 
 ```bash
