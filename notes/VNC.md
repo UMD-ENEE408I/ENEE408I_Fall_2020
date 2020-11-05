@@ -42,21 +42,24 @@ Section "Screen"
 EndSection
 ```
 
-Enable auto-login so that the VNC server is started on power-up
+# The auto-login instructions below do not seem to work on the Xavier NX
+Some students have been able to enable it with the Settings GUI. Some have not.
+Levi will debug it more once he gets a Xavier.
+~~Enable auto-login so that the VNC server is started on power-up~~
 
-Note: I also tried a systemd service, however it started the VNC server too early and it was not able to access the screen, causing a crash. This way is much easier to configure.
+~~Note: I also tried a systemd service, however it started the VNC server too early and it was not able to access the screen, causing a crash. This way is much easier to configure.~~
 
 ```bash
 sudo gedit /etc/gdm3/custom.conf
 ```
-Uncomment the following lines under the section [daemon], save and exit.
+~~Uncomment the following lines under the section [daemon], save and exit.~~
 
 ```
 AutomaticLoginEnable = true
 AutomaticLogin = ubuntu
 ```
 
-Comment out the following line
+~~Comment out the following line~~
 
 ```
 WaylandEnable=false
