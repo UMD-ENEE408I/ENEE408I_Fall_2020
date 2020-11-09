@@ -52,14 +52,14 @@ Levi will debug it more once he gets a Xavier.
 ```bash
 sudo gedit /etc/gdm3/custom.conf
 ```
-~~Uncomment the following lines under the section [daemon], save and exit.~~
+Uncommented the following lines under the section [daemon], put your name on computer where "name" is , make sure 't' in 'true' is not capitalized, save and exit.
 
 ```
-AutomaticLoginEnable = true
-AutomaticLogin = ubuntu
+AutomaticLoginEnable=true
+AutomaticLogin="name"
 ```
 
-~~Comment out the following line~~
+Make sure the following line is uncommented:
 
 ```
 WaylandEnable=false
