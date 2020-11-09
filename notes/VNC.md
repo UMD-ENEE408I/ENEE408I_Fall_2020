@@ -45,7 +45,7 @@ EndSection
 # The auto-login instructions below do not seem to work on the Xavier NX
 Some students have been able to enable it with the Settings GUI. Some have not.
 Levi will debug it more once he gets a Xavier.
-~~Enable auto-login so that the VNC server is started on power-up~~
+Enable auto-login so that the VNC server is started on power-up
 
 ~~Note: I also tried a systemd service, however it started the VNC server too early and it was not able to access the screen, causing a crash. This way is much easier to configure.~~
 
@@ -71,9 +71,10 @@ Get the Jetson's IP Address on your local network
 ifconfig
 ```
 
-Note the entry next to "wlan0"
+Note the entry next to "inet" under the "wlan0" device.
 My entry is: `192.168.1.72`
 
+You can test if you have the correct ip address by opening a terminal on your PC that you will connect from and running `ping 192.168.1.72`. This should work on Windows, Linux, and OSX.
 
 Reboot your Jetson and disconnect the screen
 
