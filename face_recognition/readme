@@ -1,0 +1,4 @@
+face_recognition_1camera.py runs facial recgonition off of one raspberry pie camera. 
+It pops up a window that shows live videostream. When it recognizes a face it puts a box around it and if it knows who it is puts their name underneath
+
+Training photos must be in the same folder as the .py script
