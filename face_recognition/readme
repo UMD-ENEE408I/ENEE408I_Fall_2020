@@ -2,3 +2,8 @@ face_recognition_1camera.py runs facial recgonition off of one raspberry pie cam
 It pops up a window that shows live videostream. When it recognizes a face it puts a box around it and if it knows who it is puts their name underneath
 
 Training photos must be in the same folder as the .py script
+
+
+
+flaskask.py is where all of the alexa commands will go. Right now it reads in the person's name that the facerec code is recognizing.
+Alexa command: Alexa who am I? You are ___
