@@ -2,19 +2,23 @@ First:
 -read through the How_to_install_face_recognition document to install needed software
 
 Second:
--download face_recognition_1camera.py
+-download facerec.py
 this runs facial recgonition off of one raspberry pie camera. 
 It pops up a window that shows live videostream. When it recognizes a face it puts a box around it and if it knows who it is puts their name underneath
 
-Training photos must be in the same folder as the .py script
 
 Third:
 -download photos of Becca, Rohit, and Nathan labeled becca.jpg, rohit.jpg, and nathan.jpg, comment out any other names in the code that you don't have photos of
+Training photos must be in the same folder as the .py script
 
 Fourth:
-- run code with python3 face_recognition_1camera.py
+- make a skill in the developer consol that asks who is in the camera. Mine is "Alexa ask Johnny Five who do you see"
 
+Fifth:
+- run ./ngrok http 5000 in separate terminal
+- change the endpoint in the developer consol to the correct address
 
-Still figuring this out:
-flaskask.py is where all of the alexa commands will go. Right now it reads in the person's name that the facerec code is recognizing.
-Alexa command: Alexa who am I? You are ___
+Sixth:
+- run python3 main.py
+
+This will run flask ask and facerec as two separate threads at the same time. Any time you ask Alexa the question you set in step 4 it wil respond with "I see 'your name'" or "I see unknown"
