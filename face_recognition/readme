@@ -1,9 +1,20 @@
-face_recognition_1camera.py runs facial recgonition off of one raspberry pie camera. 
+First:
+-read through the How_to_install_face_recognition document to install needed software
+
+Second:
+-download face_recognition_1camera.py
+this runs facial recgonition off of one raspberry pie camera. 
 It pops up a window that shows live videostream. When it recognizes a face it puts a box around it and if it knows who it is puts their name underneath
 
 Training photos must be in the same folder as the .py script
 
+Third:
+-download photos of Becca, Rohit, and Nathan labeled becca.jpg, rohit.jpg, and nathan.jpg, comment out any other names in the code that you don't have photos of
+
+Fourth:
+- run code with python3 face_recognition_1camera.py
 
 
+Still figuring this out:
 flaskask.py is where all of the alexa commands will go. Right now it reads in the person's name that the facerec code is recognizing.
 Alexa command: Alexa who am I? You are ___
