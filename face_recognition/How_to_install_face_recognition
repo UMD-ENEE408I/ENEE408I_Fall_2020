@@ -1,0 +1,24 @@
+1) Download this zip file face_recognition-master.zip and expand it into a directory, say face_recognition
+
+2) cd into the directory and install the face-recognition library using pip3
+
+sudo pip3 install face-recognition [this will take several minutes 20 or so]
+
+3) While you are waiting, read some background on the page: https://medium.com/@ageitgey/build-a-hardware-based-face-recognition-system-for-150-with-the-nvidia-jetson-nano-and-python-a25cb8c891fd 
+
+4) cd into the examples directory and type 
+
+python3 find_faces_in_picture.py [this will read in an image in the examples directory and then locate a couple of famous faces]
+
+5) Add some photos of yourself and your team mates into the directory. Here's my example GB Photo TRX.jpg
+
+6) Edit the file facerec_from_webcam_faster.py - find the lines below and edit to add your names like below
+
+# Create arrays of known face encodings and their names known_face_encodings = [ obama_face_encoding, biden_face_encoding, GB_face_encoding, Amy_face_encoding ] known_face_names = [ "Barack Obama", "Joe Biden", "Dr Gil", "Amy at Work" ]
+7) Attach your camera [I used a USB webcam] and type
+
+python3 facerec_from_webcam_faster.py
+
+This should open your camera, You might have to edit the line
+
+# Get a reference to webcam #0 (the default one) cameraNumber=0 # 0 is the buildin camera if available, USB webcam for me video_capture = cv2.VideoCapture(cameraNumber) With luck and/or skill the magic will happen.
