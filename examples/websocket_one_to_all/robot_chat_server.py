@@ -39,7 +39,7 @@ async def one_to_all(websocket, path):
         await unregister(websocket)
 
 
-start_server = websockets.serve(one_to_all, 'localhost', 5001)
+start_server = websockets.serve(one_to_all, '0.0.0.0', 5001)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
