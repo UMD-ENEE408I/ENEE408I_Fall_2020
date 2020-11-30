@@ -22,3 +22,9 @@ Sixth:
 - run python3 main.py
 
 This will run flask ask and facerec as two separate threads at the same time. Any time you ask Alexa the question you set in step 4 it wil respond with "I see 'your name'" or "I see unknown"
+
+
+Common errors: 
+
+Error: "Invalid camera device specified..."
+Solution: It didn't recognize your camera on start up, so type "reboot" in the terminal to restart the jetson
