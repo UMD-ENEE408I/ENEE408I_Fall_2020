@@ -2,6 +2,7 @@
 
 from robot_chat_client import RobotChatClient
 import time
+import serial
 
 USER = 'Yuchen'
 # serial communication
@@ -14,13 +15,13 @@ def test_callback(message_dict):
     print('The message is type {}'.format(message_dict['type']))
 
     if message_dict['type'] == 'new_user':
-        print('Value of field foo: {}'.format(message_dict['Username']))
+        print('The new user is: {}'.format(message_dict['Username']))
 
     elif message_dict['type'] == 'users':
         print('Number of users: {}'.format(message_dict['count']))
 
     elif message_dict['type'] == 'command':
-        if message_dict['target'] == USER
+        if message_dict['target'] == USER:
             print('Command target: {}\n'.format(message_dict['target']))
             print("The command is: " + message_dict['command_name'] + '\n')
             ser.write(message_dict['command_name'].encode());
@@ -28,7 +29,7 @@ def test_callback(message_dict):
 # Run this script directly to invoke this test sequence
 if __name__ == '__main__':
     print('Creating RobotChatClient object')
-    client = RobotChatClient('ws://localhost:5001', callback=test_callback)
+    client = RobotChatClient('ws://7cfccfba9583.ngrok.io', callback=test_callback)
 
 
 
