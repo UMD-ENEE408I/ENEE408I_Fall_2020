@@ -22,7 +22,5 @@ while True:
     time.sleep(1.5)
 
     print(serialcomm.readline())
-    ##.decode('ascii')
 
 serialcomm.close()
-

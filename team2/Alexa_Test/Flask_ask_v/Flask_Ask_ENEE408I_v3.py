@@ -103,14 +103,6 @@ def move_forward(duration, decimal):
         speech_text = 'You are {}, you are not my master, go away'.format(user_name)
     return statement(speech_text).simple_card('Muscles', speech_text)
 
-@ask.intent('follow_me')
-def april_tag_follow():
-    if(user_name == default_user):
-
-    else:
-        speech_text = 'You are {}, you are not my master, go away'.format(user_name)
-    return statement(speech_text).simple_card('Muscles', speech_text)
-
 if __name__ == '__main__':
     ser = serial.Serial('/dev/ttyUSB0', 9600)
     face_rec = threading.Thread(target=facerec.detect_user_thread)

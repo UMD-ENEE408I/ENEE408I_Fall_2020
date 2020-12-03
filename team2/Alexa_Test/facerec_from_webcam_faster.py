@@ -2,60 +2,56 @@ import face_recognition
 import cv2
 import numpy as np
 
+#   1. Process each video frame at 1/4 resolution (though still display it at full resolution)
+#   2. Only detect faces in every other frame of video.
 
+# Get a reference to webcam #0 (the default one)    
+cameraNumber=0 # 0 is the buildin camera if available
+video_capture = cv2.VideoCapture(cameraNumber)
 
-#definitions to help with flask-ask
-temp_name = "Unknown"
+# Load a sample picture and learn how to recognize it.
+obama_image = face_recognition.load_image_file("obama.jpg")
+obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
 
-def detect_user():
+# Load a second sample picture and learn how to recognize it.
+biden_image = face_recognition.load_image_file("biden.jpg")
+biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
 
-    #   1. Process each video frame at 1/4 resolution (though still display it at full resolution)
-    #   2. Only detect faces in every other frame of video.
+# Load a second sample picture and learn how to recognize it.
+Yuchen_image = face_recognition.load_image_file("Yuchen_00000.jpg")
+Yuchen_face_encoding = face_recognition.face_encodings(Yuchen_image)[0]
 
-    # Get a reference to webcam #0 (the default one)    
-    cameraNumber=0 # 0 is the buildin camera if available
-    video_capture = cv2.VideoCapture(cameraNumber)
+Amy_image = face_recognition.load_image_file("Amy Hizoune.jpg")
+Amy_face_encoding = face_recognition.face_encodings(Amy_image)[0]
 
-    # Load a sample picture and learn how to recognize it.
-    obama_image = face_recognition.load_image_file("obama.jpg")
-    obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
+# Create arrays of known face encodings and their names
+known_face_encodings = [
+    obama_face_encoding,
+    biden_face_encoding,
+    Yuchen_face_encoding,
+    Amy_face_encoding
+]
+known_face_names = [
+    "Barack Obama",
+    "Joe Biden",
+    "Yuchen",
+    "Amy at Work"
+]
 
-    # Load a second sample picture and learn how to recognize it.
-    biden_image = face_recognition.load_image_file("biden.jpg")
-    biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
+name = "Unknown"
 
-    # Load a second sample picture and learn how to recognize it.
-    Yuchen_image = face_recognition.load_image_file("Yuchen_00000.jpg")
-    Yuchen_face_encoding = face_recognition.face_encodings(Yuchen_image)[0]
-
-    Amy_image = face_recognition.load_image_file("Amy Hizoune.jpg")
-    Amy_face_encoding = face_recognition.face_encodings(Amy_image)[0]
-
-    # Create arrays of known face encodings and their names
-    known_face_encodings = [
-        obama_face_encoding,
-        biden_face_encoding,
-        Yuchen_face_encoding,
-        Amy_face_encoding
-    ]
-    known_face_names = [
-        "Barack Obama",
-        "Joe Biden",
-        "Yuchen",
-        "Amy at Work"
-    ]
-
+def detect_user_thread():
+    global name
     # Initialize some variables
     face_locations = []
     face_encodings = []
     face_names = []
     process_this_frame = True
-    frameSize=0.25 # 0.25 is faster
+    frameSize=0.5 # 0.25 is faster
 
-
-    count = 0
-
-    while (count < 10):
+    while True:
+        #print(name)
+        #name = "Unknown"
         # Grab a single frame of video
         ret, frame = video_capture.read()
 
@@ -70,12 +66,13 @@ def detect_user():
             # Find all the faces and face encodings in the current frame of video
             face_locations = face_recognition.face_locations(rgb_small_frame)
             face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+            name = "Unknown"
 
             face_names = []
             for face_encoding in face_encodings:
                 # See if the face is a match for the known face(s)
                 matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-                name = "Unknown"
+                # name = "Unknown"
 
                 # # If a match was found in known_face_encodings, just use the first one.
                 # if True in matches:
@@ -87,8 +84,8 @@ def detect_user():
                 best_match_index = np.argmin(face_distances)
                 if matches[best_match_index]:
                     name = known_face_names[best_match_index]
-                    temp_name = name;
-                    #print(temp_name);
+                else:
+                    name = "Unknown"
 
                 face_names.append(name)
 
@@ -97,29 +94,30 @@ def detect_user():
         # Display the results
         for (top, right, bottom, left), name in zip(face_locations, face_names):
             # Scale back up face locations since the frame we detected in was scaled to 1/4 size
-            top *= 4
-            right *= 4
-            bottom *= 4
-            left *= 4
+            #top *= 4
+            #right *= 4
+            #bottom *= 4
+            #left *= 4
 
             # Draw a box around the face
-            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+            cv2.rectangle(small_frame, (left, top), (right, bottom), (0, 0, 255), 2)
 
             # Draw a label with a name below the face
-            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            cv2.rectangle(small_frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+            cv2.putText(small_frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
         # Display the resulting image
-        cv2.imshow('Video', frame)
-        count = count + 1
-
+        cv2.imshow('Video', small_frame)
 
         # Hit 'q' on the keyboard to quit!
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
     # Release handle to the webcam
+
+if __name__ == "__main__":
+    detect_user_thread()
+    # Release handle to the webcam
     video_capture.release()
     cv2.destroyAllWindows()
-    return name

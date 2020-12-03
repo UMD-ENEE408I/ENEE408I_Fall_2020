@@ -1,5 +1,5 @@
 import facerec_from_webcam_faster1 as facerec
 
-name = facerec.get_name();
+name = facerec.detect_user();
 print(name+'\n');
 

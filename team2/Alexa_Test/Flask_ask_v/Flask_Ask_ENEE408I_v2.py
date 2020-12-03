@@ -3,10 +3,10 @@
 # Derived from examples in the Flask-Ask repo: https://github.com/johnwheeler/flask-ask
 
 import serial
+
 from flask import Flask
 from flask_ask import Ask, statement
-import facerec_from_webcam_faster as facerec
-import threading
+import facerec_from_webcam_faster1 as facerec
 
 app = Flask(__name__)
 ask = Ask(app, '/')
@@ -34,14 +34,15 @@ def self_Driving():
 @ask.intent('Face_rec')
 def face_rec():
     global user_name 
-    user_name = facerec.name
-    speech_text = 'You are {}'.format(facerec.name)
+    user_name = facerec.detect_user()
+    print(user_name)
+    speech_text = 'You are {}'.format(user_name)
     return statement(speech_text).simple_card('Muscles', speech_text)
 
 @ask.intent('Lock')
 def lock_robot():
     global user_name
-    user_name = "Unknown"
+    user_name = 'Unknown'
     speech_text = 'Self Made has locked itself'
     return statement(speech_text).simple_card('Muscles', speech_text)
 
@@ -103,16 +104,6 @@ def move_forward(duration, decimal):
         speech_text = 'You are {}, you are not my master, go away'.format(user_name)
     return statement(speech_text).simple_card('Muscles', speech_text)
 
-@ask.intent('follow_me')
-def april_tag_follow():
-    if(user_name == default_user):
-
-    else:
-        speech_text = 'You are {}, you are not my master, go away'.format(user_name)
-    return statement(speech_text).simple_card('Muscles', speech_text)
-
 if __name__ == '__main__':
     ser = serial.Serial('/dev/ttyUSB0', 9600)
-    face_rec = threading.Thread(target=facerec.detect_user_thread)
-    face_rec.start()
     app.run()
