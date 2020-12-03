@@ -1,6 +1,9 @@
 # ENEE408I Fall 2020
 Shared repository for students in the ENEE408I Fall 2020 offering
 
+## Usage
+Each team should have a folder team1, team2, etc.
+
 [This tutorial](https://www.neonscience.org/git-setup-remote) is good for learning how to maintain your Git repo.
 
 **Note 1:** You do not need to fork this repo (since you were given write access).
