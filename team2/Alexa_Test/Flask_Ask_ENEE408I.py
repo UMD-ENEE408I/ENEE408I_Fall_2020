@@ -111,6 +111,15 @@ def april_tag_follow():
         speech_text = 'You are {}, you are not my master, go away'.format(user_name)
     return statement(speech_text).simple_card('Muscles', speech_text)
 
+@ask.intent('Dance')
+def dance_like_a_monster():
+	if(user_name == default_user):
+		speech_text	= "Self Made is dancing like a monster, do you like it?"
+		ser.write('Dance'.encode())
+        print(ser.readline().decode())
+	else:
+		speech_text = 'You are {}, you are not my master, go away'.format(user_name)
+
 if __name__ == '__main__':
     ser = serial.Serial('/dev/ttyUSB0', 9600)
     face_rec = threading.Thread(target=facerec.detect_user_thread)
