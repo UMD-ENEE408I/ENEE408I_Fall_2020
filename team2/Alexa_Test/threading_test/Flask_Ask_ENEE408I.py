@@ -1,9 +1,13 @@
+#!/usr/bin/env python3
+# Allows Alexa to command the Balboa to stand up or fall down
+# Derived from examples in the Flask-Ask repo: https://github.com/johnwheeler/flask-ask
+
 import serial
 from flask import Flask
 from flask_ask import Ask, statement
-#import facerec_from_webcam_faster as facerec
+import facerec_from_webcam_faster as facerec
+import Apriltag_detection_Cam_Alexa.py
 import threading
-import camera_function2 as cf
 
 ser = serial.Serial('/dev/ttyUSB0', 9600)
 app = Flask(__name__)
@@ -32,8 +36,8 @@ def self_Driving():
 @ask.intent('Face_rec')
 def face_rec():
     global user_name 
-    user_name = cf.name
-    speech_text = 'You are {}'.format(cf.name)
+    user_name = facerec.name
+    speech_text = 'You are {}'.format(facerec.name)
     return statement(speech_text).simple_card('Muscles', speech_text)
 
 @ask.intent('Lock')
@@ -59,7 +63,7 @@ def move_forward(duration, decimal):
     return statement(speech_text).simple_card('Muscles', speech_text)
 
 @ask.intent('backward_duration', convert = {'duration': int , 'decimal': int}, default = {'duration': '1', 'decimal': '0'})
-def backward_duration(duration, decimal):
+def move_forward(duration, decimal):
     if(user_name == default_user):
         divisor = 10
         while(int(decimal) > divisor):
@@ -73,7 +77,7 @@ def backward_duration(duration, decimal):
     return statement(speech_text).simple_card('Muscles', speech_text)
 
 @ask.intent('left_duration', convert = {'duration': int , 'decimal': int}, default = {'duration': '1', 'decimal': '0'})
-def left_duration(duration, decimal):
+def move_forward(duration, decimal):
     if(user_name == default_user):
         divisor = 10
         while(int(decimal) > divisor):
@@ -88,7 +92,7 @@ def left_duration(duration, decimal):
 
 
 @ask.intent('right_duration', convert = {'duration': int , 'decimal': int}, default = {'duration': '1', 'decimal': '0'})
-def right_duration(duration, decimal):
+def move_forward(duration, decimal):
     if(user_name == default_user):
         divisor = 10
         while(int(decimal) > divisor):
@@ -105,16 +109,6 @@ def right_duration(duration, decimal):
 def april_tag_follow():
     if(user_name == default_user):
         speech_text = 'following me...'
-        cf.function_index = 2;
-    else:
-        speech_text = 'You are {}, you are not my master, go away'.format(user_name)
-    return statement(speech_text).simple_card('Muscles', speech_text)
-
-@ask.intent('Stopfollow')
-def stop_april_tag_follow():
-    if(user_name == default_user):
-        speech_text = 'stop following...'
-        cf.function_index = 1;
     else:
         speech_text = 'You are {}, you are not my master, go away'.format(user_name)
     return statement(speech_text).simple_card('Muscles', speech_text)
@@ -130,7 +124,6 @@ def dance_like_a_monster():
     return statement(speech_text).simple_card('Muscles', speech_text)
 
 if __name__ == '__main__':
-
-    face_rec = threading.Thread(target=cf.run_cam_thread)
+    face_rec = threading.Thread(target=facerec.detect_user_thread)
     face_rec.start()
     app.run()

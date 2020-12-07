@@ -1,5 +1,6 @@
 import serial
 import time
+import serial_cross_module_test
 
 try:
     serialcomm = serial.Serial('/dev/ttyUSB0', 9600) ##   /dev/tty  usb/acm_n

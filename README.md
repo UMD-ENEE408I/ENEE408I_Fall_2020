@@ -1,8 +1,7 @@
-# ENEE408I Fall 2020
+# ENEE408I Fall 2020 Team 2 (Clovis, Andrew, Yuchen)
 Shared repository for students in the ENEE408I Fall 2020 offering
 
 ## Usage
-Each team should have a folder team1, team2, etc.
 
 [This tutorial](https://www.neonscience.org/git-setup-remote) is good for learning how to maintain your Git repo.
 
@@ -20,9 +19,4 @@ Remember sharing your code with teammates is encouraged! You could even import c
 
 * Examples - Short pieces of code and examples of software the class finds useful
 * Notes - Short notes on how to install or fix issues with pieces of software
-* team1
-* team2
-* team3
-* team4
-* team5
-
+* team2 - Robot code
