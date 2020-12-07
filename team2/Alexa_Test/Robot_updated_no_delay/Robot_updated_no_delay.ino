@@ -22,7 +22,6 @@
  #define Right 4
  #define SELF_DRI 5
  #define Stop 0
- #define Dance 7
 
 // Motor
   //left motor
@@ -55,7 +54,13 @@ const double STOP_DISTANCE_SIDE   = 15; // cm
   char incoming_command[20];
   char duration[20];
   int duration_int = 1000; // default value
-  
+
+  unsigned long s_time;
+  unsigned long e_time1;
+  unsigned long e_time2;
+  unsigned long e_time3;
+  unsigned long e_time4;
+  unsigned long e_time5;
 
 void setup() {
   Left_Motor.setMode();
@@ -66,24 +71,29 @@ void setup() {
   
 void loop() {
     if (Serial.available() > 0){
+        s_time = millis();
         origin_incoming_command = Serial.readStringUntil('\n');
+        e_time1 = millis();
         process_command();
+        e_time2 = millis();
         incoming_command_dec = convert_command();
+        e_time3 = millis();
+        command_exe(incoming_command_dec);
+        e_time4 = millis();
+        Serial.println(String(e_time1 - s_time) + " " + String(e_time2 - s_time) + " " + String(e_time3 - s_time) + " " + String(e_time4 - s_time));
           //Serial.println("Dec" + String(incoming_command_dec));
-       
-        if(safe_check()== 1){
+        /*if(safe_check()== 1){
           //Serial.println("safe to execute command");
-          Serial.println("Executing..." + String(incoming_command_dec));
           command_exe(incoming_command_dec);
         }else{
           //Serial.println("trying to find a safe position...");
-          Serial.println("Obstacle");
           obstacle_avoidance_handlder_until_safe();
-        }
+        }*/
         
-    }else{
-      halt();
+    }/*else{
     }
+      halt();
+    }*/
 
 }
 
@@ -94,7 +104,7 @@ void process_command(){
    if(buf[0] == '1'){ // if the command specifies a duration 
       sscanf(buf+2, "%s %s", incoming_command,duration);
       duration_int = int(atof(duration)*1000.0);
-      //Serial.println("Arduino Process..." + String(duration_int));
+      //Serial.println("Arduino Process...");
    }else{
       sscanf(buf, "%s", incoming_command);
       //Serial.println("Life is good...");
@@ -111,19 +121,22 @@ int safe_check(){
 // Command Convert
 byte convert_command(){
   if(String(incoming_command) == "Forward"){
+    //Serial.println("Executing...Forward");
     return Forward;
   }else if((String(incoming_command) == "Backward")){
+    //Serial.println("Executing...Backward");
     return Backward;
   }else if((String(incoming_command)== "Left")){
+    //Serial.println("Executing...Left");
     return Left;
   }else if((String(incoming_command) == "Right")){
+    //Serial.println("Executing...Right");
     return Right;
   }else if((String(incoming_command) == "Stop")){
+    //Serial.println("Executing...Stop");
     return Stop;
   }else if((String(incoming_command) == "Self_Driving")){
     return SELF_DRI; 
-  }else if((String(incoming_command) == "Dance")){
-    return Dance;
   }else{
     return 100;
   }
@@ -131,22 +144,19 @@ byte convert_command(){
 
 // Command execute
 void command_exe(int command){
+  //Serial.println("Executing..." + String(command));
   switch(command){
     case Forward:
       forward(60, duration_int);
-      halt();
       break;
     case Backward:
-      backward(40, duration_int);
-      halt();
+      backward(60, duration_int);
       break;
     case Left:
       left(60, duration_int);
-      halt();
       break;
     case Right:
       right(60, duration_int);
-      halt();
       break;
     case Stop:
       halt();
@@ -154,30 +164,11 @@ void command_exe(int command){
     case SELF_DRI:
       self_driving();
       break;
-    case Dance:
-      dance_like_a_monster();
-      break;
     default:
       halt();
       break;
   }
 }
-
-
-void dance_like_a_monster(){
-  byte rand_direction_;
-  randomSeed(millis());
-  do{
-     if(safe_check()){
-      rand_direction_  = random(1,5); // random direction
-      duration_int = random(500,1001); //random duration
-      command_exe(rand_direction_);
-     }else{
-      obstacle_avoidance_handlder_until_safe();
-     }     
-  }while(!Serial.available());
-}
-
 
 
 void self_driving(){
@@ -201,20 +192,20 @@ void obstacle_avoidance_handler(){
   if(middle_dis < STOP_DISTANCE_FRONT){
     if(left_dis >= STOP_DISTANCE_SIDE && right_dis >= STOP_DISTANCE_SIDE){  // flat wall
       if(left_dis >= right_dis){
-        backward(40,1000);
+        backward(60,1000);
         right(60,500);
       }else{
-        backward(40,1000);
+        backward(60,1000);
         left(60,500);
       }
     }else if(left_dis >=  STOP_DISTANCE_SIDE){
-      backward(40,1000);
+      backward(60,1000);
       left(60,500);
     }else if(right_dis >= STOP_DISTANCE_SIDE){
-      backward(40,1000);
+      backward(60,1000);
       right(60,500);
     }else{
-      backward(40,1000);
+      backward(60,1000);
       right(60,1000);
     }
   }
@@ -232,20 +223,20 @@ void obstacle_avoidance_handlder_until_safe(){
       if(middle_dis < STOP_DISTANCE_FRONT){
         if(left_dis >= STOP_DISTANCE_SIDE && right_dis >= STOP_DISTANCE_SIDE){  // flat wall
           if(left_dis >= right_dis){
-            backward(40,1000);
+            backward(60,1000);
             right(60,500);
           }else{
-            backward(40,1000);
+            backward(60,1000);
             left(60,500);
           }
         }else if(left_dis >=  STOP_DISTANCE_SIDE){
-          backward(40,1000);
+          backward(60,1000);
           left(60,500);
         }else if(right_dis >= STOP_DISTANCE_SIDE){
-          backward(40,1000);
+          backward(60,1000);
           right(60,500);
         }else{
-          backward(40,1000);
+          backward(60,1000);
           right(60,1000);
         }
       }
@@ -271,7 +262,7 @@ void forward(int PWM_speed, int time_){
   Right_Motor.setPWM(PWM_speed+5);
   Left_Motor.forward();
   Right_Motor.backward();
-  delay(time_);
+  //delay(time_);
 }
 
 void backward(int PWM_speed, int time_){
@@ -279,7 +270,7 @@ void backward(int PWM_speed, int time_){
   Right_Motor.setPWM(PWM_speed+5);
   Left_Motor.backward();
   Right_Motor.forward();
-  delay(time_);
+  //delay(time_);
 }
 
 void left(int PWM_speed, int time_){
@@ -287,7 +278,7 @@ void left(int PWM_speed, int time_){
   Right_Motor.setPWM(PWM_speed+5);
   Left_Motor.backward();
   Right_Motor.backward();
-  delay(time_);
+  //delay(time_);
 }
 
 void right(int PWM_speed, int time_){
@@ -295,7 +286,7 @@ void right(int PWM_speed, int time_){
   Right_Motor.setPWM(PWM_speed+5);
   Left_Motor.forward();
   Right_Motor.forward();
-  delay(time_);
+  //delay(time_);
 }
 
 void halt(){
