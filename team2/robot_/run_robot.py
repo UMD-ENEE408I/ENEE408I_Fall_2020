@@ -2,18 +2,19 @@ import serial
 from flask import Flask
 from flask_ask import Ask, statement
 import threading
-import camera_function2 as cf
+import camera_function as cf
+from robot_chat_client import RobotChatClient
 
 ser = serial.Serial('/dev/ttyUSB0', 9600)
 app = Flask(__name__)
 ask = Ask(app, '/')
 
 user_name = "Unknown"
-default_user = "Yuchen"
+default_user = "Jack"
 
 @ask.intent('Stop')
 def stop():
-    speech_text = 'Self Made will stop. I am dead'
+    speech_text = 'harry potter has stopped. I am dead'
     ser.write('Stop'.encode())
     print(ser.readline())
     return statement(speech_text).simple_card('Muscles', speech_text)
@@ -21,7 +22,7 @@ def stop():
 @ask.intent('Self_Driving_MODE')
 def self_Driving():
     if(user_name == default_user):  
-        speech_text = 'Self made enters self driving mode, I am feeling more energized than ever'
+        speech_text = 'harry potter enters self driving mode, I am feeling more energized than ever'
         ser.write('Self_Driving'.encode())
         print(ser.readline())
     else:
@@ -32,17 +33,17 @@ def self_Driving():
 def face_rec():
     global user_name 
     user_name = cf.name
-        if user_name == default_user
-            speech_text = 'You are {}, welcome!'.format(user_name)
-        else
-            speech_text = 'You are {}, emmmmmmm!'.format(user_name)
+    if user_name == default_user:
+        speech_text = 'You are {}, welcome!'.format(user_name)
+    else:
+        speech_text = 'You are {}, emmmmmmm!'.format(user_name)
     return statement(speech_text).simple_card('Muscles', speech_text)
 
 @ask.intent('Lock')
 def lock_robot():
     global user_name
     user_name = "Unknown"
-    speech_text = 'Self Made has locked itself'
+    speech_text = 'harry potter has locked itself'
     return statement(speech_text).simple_card('Muscles', speech_text)
 
 
@@ -53,7 +54,7 @@ def move_forward(duration, decimal):
         while(int(decimal) > divisor):
             divisor *= 10
         time = float(duration)+ float(decimal)/float(divisor)
-        speech_text = 'Self Made moves foward for {} seconds, do you like turtles?'.format(time);
+        speech_text = 'harry potter moves foward for {} seconds, do you like turtles?'.format(time);
         ser.write('1 Forward {}'.format(duration).encode())
         print(ser.readline().decode())
     else:
@@ -67,7 +68,7 @@ def backward_duration(duration, decimal):
         while(int(decimal) > divisor):
             divisor *= 10
         time = float(duration)+ float(decimal)/float(divisor)
-        speech_text = 'Self Made moves backward for {} seconds, do you like turtles?'.format(time);
+        speech_text = 'harry potter moves backward for {} seconds, do you like turtles?'.format(time);
         ser.write('1 Backward {}'.format(duration).encode())
         print(ser.readline().decode())
     else:
@@ -81,7 +82,7 @@ def left_duration(duration, decimal):
         while(int(decimal) > divisor):
             divisor *= 10
         time = float(duration)+ float(decimal)/float(divisor)
-        speech_text = 'Self Made turns left for {} secondsm do you like turtles?'.format(time);
+        speech_text = 'harry potter turns left for {} secondsm do you like turtles?'.format(time);
         ser.write('1 Left {}'.format(duration).encode())
         print(ser.readline().decode())
     else:
@@ -96,7 +97,7 @@ def right_duration(duration, decimal):
         while(int(decimal) > divisor):
             divisor *= 10
         time = float(duration)+ float(decimal)/float(divisor)
-        speech_text = 'Self Made turns right for {} seconds, do you like turtles?'.format(time);
+        speech_text = 'harry potter turns right for {} seconds, do you like turtles?'.format(time);
         ser.write('1 Right {}'.format(duration).encode())
         print(ser.readline().decode())
     else:
@@ -124,7 +125,7 @@ def stop_april_tag_follow():
 @ask.intent('Dance')
 def dance_like_a_monster():
     if(user_name == default_user):
-        speech_text = "Self Made is dancing like a monster, do you like it?"
+        speech_text = "harry potter is dancing like a monster, do you like it?"
         ser.write('Dance'.encode())
         print(ser.readline().decode())
     else:
@@ -133,13 +134,13 @@ def dance_like_a_monster():
 
 check_status = None
 
-@ask.intent("OnlineFriend",default = {'name': ''})
+@ask.intent("OnlineFriend",default = {'name': 'jack'})
 def check_friend(name):
     global check_status
     check_status = None
-
+    print(name);
     target = name;
-    client_Yuchen.send({'sender': 'Yuchen'
+    client_Yuchen.send({'sender': 'jack',
                  'type': 'command',
                  'target': name,
                  'command_name': 'is_online'});
@@ -151,10 +152,12 @@ def check_friend(name):
     else:
         speech_text = '{} is not online, try to find someone else'.format(name)
 
-    return
+        print(speech_text)
+    return statement(speech_text).simple_card('Muscles', speech_text)
 
 
 def test_callback(message_dict):
+    global check_status
     print('Received dictionary {}'.format(message_dict))
     print('The message is type {}'.format(message_dict['type']))
 
@@ -174,24 +177,21 @@ def test_callback(message_dict):
                 else:
                     message = 'No'
 
-            client_Yuchen.send({
-                'type': 'Response'
-                'sender': default_user
-                'message': message
-                'receiver': message_dict['sender']
-                })
+	            client_Yuchen.send({
+	                'type': 'Response',
+	                'sender': default_user,
+	                'message': message,
+	                'receiver': message_dict['sender']
+	                })
 
-    elif message_dict['type'] == 'Response'
+    elif message_dict['type'] == 'Response':
         if message_dict['receiver'] == default_user:
             check_status = message_dict['message']
 
 
-            #ser.write(message_dict['command_name'].encode());
-
-
 
 if __name__ == '__main__':
-    client_Yuchen = RobotChatClient('ws://7cfccfba9583.ngrok.io', callback=test_callback)
+    client_Yuchen = RobotChatClient('ws://362986e07a35.ngrok.io', callback=test_callback)
 
     face_rec = threading.Thread(target=cf.run_cam_thread)
     face_rec.start()
