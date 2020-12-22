@@ -19,4 +19,4 @@ Remember sharing your code with teammates is encouraged! You could even import c
 
 * Examples - Short pieces of code and examples of software the class finds useful
 * Notes - Short notes on how to install or fix issues with pieces of software
-* team2 - Robot code
+* team2 - Robot code for F20 ENEE408I Team 2
