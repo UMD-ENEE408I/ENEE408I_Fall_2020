@@ -4,28 +4,13 @@ from flask_ask import Ask, statement
 import threading
 import camera_function as cf
 from robot_chat_client import RobotChatClient
-import time
 
 ser = serial.Serial('/dev/ttyUSB0', 9600)
 app = Flask(__name__)
 ask = Ask(app, '/')
 
 user_name = "Unknown"
-default_user = "jack"
-check_status = None
-group_status = {
-    'jack' : 'offline',
-    'Andrew' : 'offline',
-    'Clovis' : 'offline',
-}
-
-@ask.launch
-def launched():
-    speech = "Welcome, Harry Potter is now activating..."
-    print("launch...")
-    group_status['jack'] = 'online'
-    return statement(speech)
-
+default_user = "Jack"
 
 @ask.intent('Stop')
 def stop():
@@ -137,26 +122,17 @@ def stop_april_tag_follow():
         speech_text = 'You are {}, you are not my master'.format(user_name)
     return statement(speech_text).simple_card('Muscles', speech_text)
 
-@ask.intent('Dance', default = {'key':''})
-def dance_like_a_monster(key):
-    catch_phase = ['together','with me', 'all togther']
+@ask.intent('Dance')
+def dance_like_a_monster():
     if(user_name == default_user):
-        if key in catch_phase:
-            client_Yuchen.send({'sender': 'jack',
-                 'type': 'command',
-                 'target': 'all',
-                 'command_name': 'Dance'});
-            speech_text = "harry potter is dancing with friends, emmmmmmmmm"
-        else:
-            speech_text = "harry potter is dancing like a monster, do you like it?"
-
+        speech_text = "harry potter is dancing like a monster, do you like it?"
         ser.write('Dance'.encode())
         print(ser.readline().decode())
     else:
         speech_text = 'You are {}, you are not my master'.format(user_name)
     return statement(speech_text).simple_card('Muscles', speech_text)
 
-
+check_status = None
 
 @ask.intent("OnlineFriend",default = {'name': 'jack'})
 def check_friend(name):
@@ -172,32 +148,12 @@ def check_friend(name):
         time.sleep(.02)
 
     if check_status == 'Yes':
-        group_status[name] = 'online'
         speech_text = '{} is online, wanna have some funs...'.format(name)
     else:
-        group_status[name] = 'offline'
         speech_text = '{} is not online, try to find someone else'.format(name)
 
-    print(speech_text)
+        print(speech_text)
     return statement(speech_text).simple_card('Muscles', speech_text)
-
-
-
-@ask.intent('target_follow', default = {'name': 'jack'})
-def target_follow(name):
-    print(name)
-    if(group_status[name] == 'offline'):
-        speech = '{} is currently offline, try later...'.format(name)
-    else:
-        client_Yuchen.send({
-                 'sender': 'jack',
-                 'type': 'command',
-                 'target': name,
-                 'command_name': 'follow'
-            })
-        speech = '{}.robot will follow him until someone tells to stop...'.format(name)
-    print(speech)
-    return statement(speech)
 
 
 def test_callback(message_dict):
@@ -212,48 +168,30 @@ def test_callback(message_dict):
         print('Number of users: {}'.format(message_dict['count']))
 
     elif message_dict['type'] == 'command':
-        if message_dict['target'] == default_user or message_dict['target'] == 'all':
+        if message_dict['target'] == default_user:
             print('Command target: {}\n'.format(message_dict['target']))
             print("The command is: " + message_dict['command_name'] + '\n')
-
             if message_dict['command_name'] == 'is_online':
-                if(group_status[default_user] == 'online'):
+                if(user_name == default_user):
                     message = 'Yes'
                 else:
                     message = 'No'
 
                 client_Yuchen.send({
-                        'type': 'Response',
-                        'sender': default_user,
-                        'message': message,
-                        'receiver': message_dict['sender']
-                        })
-
-            elif message_dict['command_name'] == 'follow':
-                print("{}'s robot is following him...".format(message_dict['target']))
-                cf.function_index = 2
-
-            elif message_dict['command_name'] == 'Dance':
-                ser.write("Dance".encode())
-
+                    'type': 'Response',
+                    'sender': default_user,
+                    'message': message,
+                    'receiver': message_dict['sender']
+                    })
 
     elif message_dict['type'] == 'Response':
         if message_dict['receiver'] == default_user:
             check_status = message_dict['message']
 
 
-@ask.intent('AMAZON.ResumeIntent')
-def resume():
-    return audio('Resuming.').resume()
-
-@ask.intent('AMAZON.StopIntent')
-def stop():
-    return audio('stopping').clear_queue(stop=True)
-
-
 
 if __name__ == '__main__':
-    client_Yuchen = RobotChatClient('ws://864e487b8730.ngrok.io', callback=test_callback)
+    client_Yuchen = RobotChatClient('ws://362986e07a35.ngrok.io', callback=test_callback)
 
     face_rec = threading.Thread(target=cf.run_cam_thread)
     face_rec.start()

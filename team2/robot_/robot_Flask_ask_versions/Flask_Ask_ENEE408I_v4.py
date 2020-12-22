@@ -6,7 +6,7 @@ import serial
 from flask import Flask
 from flask_ask import Ask, statement
 import facerec_from_webcam_faster as facerec
-import Apriltag_detection_Cam_Alexa.py
+#import Apriltag_detection_Cam_Alexa.py
 import threading
 
 app = Flask(__name__)

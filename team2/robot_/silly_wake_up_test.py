@@ -1,9 +1,10 @@
 from flask import Flask, json, render_template
 from flask_ask import Ask, request, session, question, statement, context, audio
 import serial
-#import threading
-#import camera_function as cf
+import threading
+import camera_function as cf
 from robot_chat_client import RobotChatClient
+import time
 
 
 
@@ -11,9 +12,9 @@ app = Flask(__name__)
 ask = Ask(app, '/')
 
 group_status = {
-	'jack' : 'offline',
-	'Andrew' : 'offline',
-	'Clovis' : 'offline',
+    'jack' : 'offline',
+    'Andrew' : 'offline',
+    'Clovis' : 'offline',
 }
 
 user_name = "Unknown"
@@ -25,10 +26,10 @@ check_status = None
 
 @ask.launch
 def launched():
-	speech = "Welcome, Harry Potter is now activating..."
-	print("launch...")
-	group_status['jack'] = 'online'
-	return statement(speech)
+    speech = "Welcome, Harry Potter is now activating..."
+    print("launch...")
+    group_status['jack'] = 'online'
+    return statement(speech)
 
 
 @ask.intent("OnlineFriend",default = {'name': 'jack'})
@@ -58,19 +59,19 @@ def check_friend(name):
 
 @ask.intent('target_follow', default = {'name': 'jack'})
 def target_follow(name):
-	print(name)
-	if(group_status[name] = 'offline')
-		speech = '{} is currently offline, try later...'.format(name)
-	else()
-		client_Yuchen.send({
-				 'sender': 'jack',
+    print(name)
+    if(group_status[name] == 'offline'):
+        speech = '{} is currently offline, try later...'.format(name)
+    else:
+        client_Yuchen.send({
+                 'sender': 'jack',
                  'type': 'command',
                  'target': name,
-                 'command_name': 'is_online'
-			})
-		speech = '{}.robot will follow him until someone tells to stop...'.format(name)
-	print(speech)
-	return statement(speech)
+                 'command_name': 'follow'
+            })
+        speech = '{}.robot will follow him until someone tells to stop...'.format(name)
+    print(speech)
+    return statement(speech)
 
 
 def test_callback(message_dict):
@@ -90,21 +91,21 @@ def test_callback(message_dict):
             print("The command is: " + message_dict['command_name'] + '\n')
 
             if message_dict['command_name'] == 'is_online':
-                if(user_name == default_user):
+                if(group_status[default_user] == 'online'):
                     message = 'Yes'
                 else:
                     message = 'No'
 
-	            client_Yuchen.send({
-	                'type': 'Response',
-	                'sender': default_user,
-	                'message': message,
-	                'receiver': message_dict['sender']
-	                })
+                client_Yuchen.send({
+                        'type': 'Response',
+                        'sender': default_user,
+                        'message': message,
+                        'receiver': message_dict['sender']
+                        })
 
-	        elif message_dict['command_name'] == 'follow':
-	        		print("{}'s robot is following him...".format(message_dict['target']))
-        	        #cf.function_index = 1;
+            elif message_dict['command_name'] == 'follow':
+                    print("{}'s robot is following him...".format(message_dict['target']))
+                    cf.function_index = 2;
 
 
     elif message_dict['type'] == 'Response':
@@ -112,12 +113,10 @@ def test_callback(message_dict):
             check_status = message_dict['message']
 
 
-
-
 if __name__ == '__main__':
-    client_Yuchen = RobotChatClient('ws://7973e5ba398a.ngrok.io', callback=test_callback)
-    #face_rec = threading.Thread(target=cf.run_cam_thread)
-    #face_rec.start()
+    client_Yuchen = RobotChatClient('ws://d7d1f0f0118d.ngrok.io', callback=test_callback)
+    face_rec = threading.Thread(target=cf.run_cam_thread)
+    face_rec.start()
     client_Yuchen.send({
              'type': 'new_user',
              'Username': 'jack',
