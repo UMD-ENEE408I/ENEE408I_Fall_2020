@@ -1,12 +1,12 @@
 from robot_chat_client import RobotChatClient
 import time
 
-def test_callback(message_dict):
-    print('Received dictionary {}'.format(message_dict))
-    print('The message is type {}'.format(message_dict['type']))
+usrname = 'Baymax'
 
-    if message_dict['type'] == 'test_message_type':
-        print('Value of field foo: {}'.format(message_dict['foo']))
+def test_callback(message_dict):
+    
+    if message_dict['type'] == 'message':
+        print('{0} : {1}'.format(message_dict['user'],message_dict['foo']))
 
     if message_dict['type'] == 'users':
         print('Number of users: {}'.format(message_dict['count']))
@@ -17,8 +17,21 @@ if __name__ == '__main__':
     client = RobotChatClient('ws://localhost:5001', callback=test_callback)
 
     time.sleep(1)
-    print('Sending a test message')
-    client.send({'type': 'test_message_type',
-                 'foo': [1, 2, 3, 4, 5]})
 
-    print('Waiting for ctrl+c')
+    print('User Joined: Baymax Has Connected')
+    client.send({'type': 'message',
+                 'user': 'User Joined',
+                 'foo': 'Baymax'})
+
+    string = input()
+    while(string != 'quit'):
+        client.send({'type': 'message', 'user': usrname, 'foo': string})
+        string = input()
+
+    client.send({'type': 'message',
+                 'user': 'User Disconnected',
+                 'foo': 'Baymax'})
+
+    print("please use ctrl + c to end the program")
+
+    

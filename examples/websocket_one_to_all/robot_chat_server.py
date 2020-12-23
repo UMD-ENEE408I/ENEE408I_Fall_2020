@@ -2,6 +2,8 @@
 # Below is based heavily on the examples in:
 # https://websockets.readthedocs.io/en/stable/intro.html
 
+#python3 robot_chat_server 2> /dev/null
+
 import asyncio
 import json
 import websockets
@@ -35,6 +37,8 @@ async def one_to_all(websocket, path):
             # If there is anyone to notify, notify all
             if to_notify:
                 await asyncio.wait([user.send(message) for user in to_notify])
+    except:
+        pass
     finally:
         await unregister(websocket)
 
