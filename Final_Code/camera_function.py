@@ -195,7 +195,7 @@ def run_cam_thread():
                         print(ser.readline().decode())
                 else:
                     print("Apriltag Not Centered..")
-                    if(cX < 170):
+                    if(cX < 150):
                         print("Shift Left...")
                         ser.write("1 Left .1".encode())
                         print(ser.readline().decode())

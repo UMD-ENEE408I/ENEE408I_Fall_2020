@@ -1,0 +1,310 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "harry potter",
+            "modelConfiguration": {
+                "fallbackIntentSensitivity": {
+                    "level": "MEDIUM"
+                }
+            },
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": [
+                        "stop  current action"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "backward_duration",
+                    "slots": [
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "decimal",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "go backward for {duration} point {decimal} seconds",
+                        "go backward for {duration} seconds",
+                        "Go Backward"
+                    ]
+                },
+                {
+                    "name": "left_duration",
+                    "slots": [
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "decimal",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "turn left for {duration} point {decimal} seconds",
+                        "turn Left for {duration} seconds",
+                        "Turn Left"
+                    ]
+                },
+                {
+                    "name": "right_duration",
+                    "slots": [
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "decimal",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "turn right for {duration} seconds",
+                        "turn right  for {duration} point {decimal} seconds",
+                        "Turn Right"
+                    ]
+                },
+                {
+                    "name": "Stop",
+                    "slots": [],
+                    "samples": [
+                        "halt",
+                        "Stop there"
+                    ]
+                },
+                {
+                    "name": "Self_Driving_MODE",
+                    "slots": [],
+                    "samples": [
+                        "Enter Self Driving Mode"
+                    ]
+                },
+                {
+                    "name": "Face_rec",
+                    "slots": [],
+                    "samples": [
+                        "verify user",
+                        "Who is standing in front",
+                        "Who I am"
+                    ]
+                },
+                {
+                    "name": "Lock",
+                    "slots": [],
+                    "samples": [
+                        "lock himself"
+                    ]
+                },
+                {
+                    "name": "Reverse",
+                    "slots": [],
+                    "samples": [
+                        "turn  around",
+                        "Reverse its direction"
+                    ]
+                },
+                {
+                    "name": "forward_duration",
+                    "slots": [
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "decimal",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "go forward for {duration} seconds",
+                        "move forward",
+                        "go forward for {duration} point {decimal} seconds"
+                    ]
+                },
+                {
+                    "name": "follow_me",
+                    "slots": [],
+                    "samples": [
+                        "follow me"
+                    ]
+                },
+                {
+                    "name": "Dance",
+                    "slots": [
+                        {
+                            "name": "key",
+                            "type": "together"
+                        }
+                    ],
+                    "samples": [
+                        "dance {key} ",
+                        "dance like a monster",
+                        "Go crazy",
+                        "Dance"
+                    ]
+                },
+                {
+                    "name": "OnlineFriend",
+                    "slots": [
+                        {
+                            "name": "name",
+                            "type": "AMAZON.FirstName"
+                        }
+                    ],
+                    "samples": [
+                        "Is {name} there"
+                    ]
+                },
+                {
+                    "name": "Stopfollow",
+                    "slots": [],
+                    "samples": [
+                        "Stop follow me"
+                    ]
+                },
+                {
+                    "name": "Wakeup",
+                    "slots": [],
+                    "samples": [
+                        "fire up",
+                        "wake up"
+                    ]
+                },
+                {
+                    "name": "target_follow",
+                    "slots": [
+                        {
+                            "name": "name",
+                            "type": "AMAZON.FirstName"
+                        }
+                    ],
+                    "samples": [
+                        "follow  {name}"
+                    ]
+                },
+                {
+                    "name": "sendcommand",
+                    "slots": [],
+                    "samples": [
+                        "send a command"
+                    ]
+                },
+                {
+                    "name": "AMAZON.PauseIntent",
+                    "samples": [
+                        "pause"
+                    ]
+                },
+                {
+                    "name": "AMAZON.ResumeIntent",
+                    "samples": []
+                }
+            ],
+            "types": [
+                {
+                    "name": "together",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "with me"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "together"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "all together"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "sendcommand",
+                    "confirmationRequired": true,
+                    "prompts": {
+                        "confirmation": "Confirm.Intent.349600368595"
+                    },
+                    "slots": []
+                },
+                {
+                    "name": "target_follow",
+                    "confirmationRequired": true,
+                    "prompts": {
+                        "confirmation": "Confirm.Intent.320104810137"
+                    },
+                    "slots": [
+                        {
+                            "name": "name",
+                            "type": "AMAZON.FirstName",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        }
+                    ]
+                },
+                {
+                    "name": "Dance",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "key",
+                            "type": "together",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Confirm.Intent.349600368595",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what could would you like to send?"
+                    }
+                ]
+            },
+            {
+                "id": "Confirm.Intent.320104810137",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Do you want {name} 's robot to follow him"
+                    }
+                ]
+            }
+        ]
+    }
+}
