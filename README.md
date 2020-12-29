@@ -7,3 +7,4 @@ Shared repository for students in the ENEE408I Fall 2020 offering
 * Notes - Short notes on how to install or fix issues with pieces of software
 * team2 - Robot code for F20 ENEE408I Team 2
 * Final_Code - Robot code for final demo
+* Final_Report - Final Report of the course
